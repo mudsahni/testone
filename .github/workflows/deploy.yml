@@ -43,13 +43,14 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Log in to Google Container Registry
-      run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}" | docker login -u _json_key --password-stdin https://gcr.io
-
-    - name: Configure gcloud CLI
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-        project_id: ${{ env.PROJECT_ID }}
+      run: |
+        echo '${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}' > gcp-key.json
+        cat gcp-key.json | docker login -u _json_key --password-stdin https://gcr.io
+        - name: Configure gcloud CLI
+          uses: google-github-actions/setup-gcloud@v1
+          with:
+            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+            project_id: ${{ env.PROJECT_ID }}
 
     - name: Install GCP components
       run: gcloud components install gke-gcloud-auth-plugin
