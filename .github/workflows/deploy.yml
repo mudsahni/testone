@@ -46,6 +46,7 @@ jobs:
       run: |
         echo '${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}' > gcp-key.json
         cat gcp-key.json | docker login -u _json_key --password-stdin https://gcr.io
+        
     - name: Configure gcloud CLI
       uses: google-github-actions/setup-gcloud@v1
       with:
@@ -55,8 +56,10 @@ jobs:
     - name: Install GCP components
       run: gcloud components install gke-gcloud-auth-plugin
 
-    - name: Authenticate with GKE
-      run: gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --region ${{ env.REGION }}
+    - name: Authenticate gcloud
+      run: |
+        gcloud auth activate-service-account --key-file=<(echo '${{ secrets.GCP_CREDENTIALS }}')
+        gcloud config set project ${{ env.PROJECT_ID }}
 
     - name: Build and push Docker image
       run: |
