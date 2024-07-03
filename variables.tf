@@ -1,8 +1,3 @@
-variable "credentials_file" {
-  description = "Path to the service account key file"
-  default     = ""
-}
-
 variable "project_id" {
   description = "The GCP project ID"
 }
