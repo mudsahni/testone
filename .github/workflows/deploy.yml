@@ -72,5 +72,4 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -var "project_id=${{ env.PROJECT_ID }}" -var "region=${{ env.REGION }}" -var "image_name=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}"
-      working-directory: terraform
 
