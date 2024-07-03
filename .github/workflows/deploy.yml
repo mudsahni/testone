@@ -67,9 +67,14 @@ jobs:
       with:
         terraform_wrapper: false
 
+
     - name: Terraform Init
       run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -var "project_id=${{ env.PROJECT_ID }}" -var "region=${{ env.REGION }}" -var "image_name=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}"
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_CONFIG }}
 
